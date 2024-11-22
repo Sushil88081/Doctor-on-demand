@@ -23,13 +23,11 @@ const Login = () => {
   const handleLogin = () => {
     const { email, password } = value;
 
-    // Validate the form inputs
     if (!email || !password) {
       Alert.alert("Error", "Please fill in both email and password.");
       return;
     }
 
-    // Log the form values to the console
     console.log("Login Data:", value);
 
     // Perform any login actions here (e.g., API call or navigation)
