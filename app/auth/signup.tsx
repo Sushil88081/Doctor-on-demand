@@ -13,7 +13,7 @@ const Signup = () => {
   const router = useRouter();
   const handleClick = () => {
     console.log("click ");
-    router.navigate("/login");
+    // router.navigate("/login");
   };
 
   return (
@@ -27,7 +27,7 @@ const Signup = () => {
       />
       <View style={{ paddingHorizontal: 5 }}>
         <TextInput
-          placeholder="Enter Your Email"
+          placeholder="Enter Your Name"
           style={{
             padding: 10,
             marginVertical: 10,
@@ -39,6 +39,28 @@ const Signup = () => {
         />
         <TextInput
           placeholder="Enter Your Password"
+          style={{
+            padding: 10,
+            marginVertical: 10,
+            backgroundColor: "white",
+            borderRadius: 5,
+            borderColor: "gray",
+            borderWidth: 1,
+          }}
+        />
+        <TextInput
+          placeholder="Enter Your Mobile Number"
+          style={{
+            padding: 10,
+            marginVertical: 10,
+            backgroundColor: "white",
+            borderRadius: 5,
+            borderColor: "gray",
+            borderWidth: 1,
+          }}
+        />
+        <TextInput
+          placeholder="Enter Your Address"
           style={{
             padding: 10,
             marginVertical: 10,

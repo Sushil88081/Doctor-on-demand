@@ -1,19 +1,35 @@
-import Mybutton from "@/components/mybutton";
+import React, { useEffect } from "react";
+import { View, Text, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
-import React from "react";
-import { View } from "react-native";
 
-const HomePage = () => {
+const SplashScreen = () => {
   const router = useRouter();
-  const handleClick = () => {
-    console.log("click ");
-    router.navigate("/login");
-  };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      router.push("/auth");
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [router]);
+
   return (
-    <View>
-      <Mybutton title={"continue"} onPress={handleClick} />
+    <View style={styles.container}>
+      <Text style={styles.text}>Welcome to My App!</Text>
     </View>
   );
 };
 
-export default HomePage;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#4CAF50",
+  },
+  text: {
+    fontSize: 24,
+    color: "white",
+    fontWeight: "bold",
+  },
+});
+
+export default SplashScreen;

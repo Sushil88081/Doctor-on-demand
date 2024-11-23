@@ -19,7 +19,7 @@ const Mybutton: React.FC<MyButtonProps> = ({ title, onPress }) => {
 };
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "gray",
+    backgroundColor: "indigo",
     borderRadius: "5px",
     justifyContent: "center",
     alignItems: "center",
@@ -28,7 +28,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     height: 50,
     width: "100%",
+    marginVertical: 10,
+    borderWidth: 1,
+    // borderColor: "indigo",
   },
+
   text: {
     color: "white",
     fontSize: 20,
