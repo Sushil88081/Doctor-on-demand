@@ -30,8 +30,7 @@ const Login = () => {
 
     console.log("Login Data:", value);
 
-    // Perform any login actions here (e.g., API call or navigation)
-    // router.push("/dashboard"); // Example navigation
+    router.push("/home");
   };
 
   return (
