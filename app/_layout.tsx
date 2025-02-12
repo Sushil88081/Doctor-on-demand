@@ -8,6 +8,10 @@ export default function AppLayout() {
       <Stack.Screen name="auth/login" options={{ title: "Login" }} />
       <Stack.Screen name="auth/signup" options={{ title: "Signup" }} />
       <Stack.Screen name="home" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="home/components/doctorListCard.tsx"
+        options={{ headerShown: false }}
+      />
     </Stack>
   );
 }

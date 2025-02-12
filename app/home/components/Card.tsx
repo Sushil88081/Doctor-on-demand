@@ -1,5 +1,13 @@
+import { router, useRouter } from "expo-router";
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from "react-native";
 
 // Define types for card data
 type CardData = {
@@ -13,33 +21,35 @@ const cardsData: CardData[] = [
   {
     id: 1,
     title: "Book Consultation",
-    imageUrl: require("../../assets/images/consultation.jpg"), // Use require for local images
+    imageUrl: require("../../../assets/images/consultation.jpg"), // Use require for local images
   },
   {
     id: 2,
     title: "Book Medicine",
-    imageUrl: require("../../assets/images/bookmedicine.jpg"), // Use require for local images
+    imageUrl: require("../../../assets/images/bookmedicine.jpg"), // Use require for local images
   },
   {
     id: 3,
     title: "Order Medicine",
-    imageUrl: require("../../assets/images/ordermedicine.jpg"), // Use require for local images
+    imageUrl: require("../../../assets/images/ordermedicine.jpg"), // Use require for local images
   },
 ];
 
 // Define props for Card component
 type CardProps = {
   title: string;
-  imageUrl: any; // Use `any` for require statements
+  imageUrl: any;
+  onPress: () => void; // Use `any` for require statements
 };
 
 // Card Component
-const Card: React.FC<CardProps> = ({ title, imageUrl }) => {
+const Card: React.FC<CardProps> = ({ title, imageUrl, onPress }) => {
   return (
-    <TouchableOpacity style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={onPress}>
       <Image
         source={imageUrl} // Use the imageUrl directly
         style={styles.image} // Apply styles
+        // Call the onPress function when the card is clicked
       />
       <View style={styles.content}>
         <Text style={styles.title}>{title}</Text>
@@ -50,10 +60,21 @@ const Card: React.FC<CardProps> = ({ title, imageUrl }) => {
 
 // Main Component
 const App: React.FC = () => {
+  const router = useRouter();
+  const handlePress = (title: string) => {
+    router.push("/home/components/doctorListCard");
+  };
   return (
     <View style={styles.container}>
       {cardsData.map((card) => (
-        <Card key={card.id} title={card.title} imageUrl={card.imageUrl} />
+        <Card
+          key={card.id}
+          title={card.title}
+          imageUrl={card.imageUrl}
+          onPress={() => {
+            handlePress(card.title);
+          }}
+        />
       ))}
     </View>
   );
