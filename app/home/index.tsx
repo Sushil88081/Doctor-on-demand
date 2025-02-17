@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 
 import BookConsultationCard from "./components/Card";
 
-const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <BookConsultationCard />
