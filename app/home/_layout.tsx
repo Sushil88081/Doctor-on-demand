@@ -4,7 +4,7 @@ export default function TabLayout() {
   return (
     <Tabs>
       <Tabs.Screen
-        name="../../app/(tabs)/index.tsx"
+        name="../(tabs)/_layout.tsx"
         options={{
           href: null,
         }}
