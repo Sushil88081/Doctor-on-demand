@@ -63,8 +63,7 @@ const styles = StyleSheet.create({
     flexDirection: "row", // Align text and icon horizontally
     justifyContent: "space-between", // Space between the text and icon
     alignItems: "center", // Align vertically
-    paddingHorizontal: 20, // Optional for padding around the container
-    marginTop: 20, // Optional to add space from the image
+    // Optional to add space from the image
   },
   text: {
     fontSize: 20,
