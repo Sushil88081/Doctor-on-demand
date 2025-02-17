@@ -21,6 +21,7 @@ const cardsData: CardData[] = [
   {
     id: 1,
     title: "Book Consultation",
+
     imageUrl: require("../../../assets/images/consultation.jpg"), // Use require for local images
   },
   {
@@ -62,7 +63,13 @@ const Card: React.FC<CardProps> = ({ title, imageUrl, onPress }) => {
 const App: React.FC = () => {
   const router = useRouter();
   const handlePress = (title: string) => {
-    router.push("/home/components/doctorListCard");
+    if (title === "Book Consultation") {
+      router.push("/doctor");
+    } else if (title === "Book Medicine") {
+      router.push("/medicine");
+    } else {
+      router.push("/ordermedicine");
+    }
   };
   return (
     <View style={styles.container}>

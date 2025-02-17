@@ -1,12 +1,12 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-import BookConsultationCard from "./components/Card";
+import UploadPrescription from "./components/uploadPriscription";
 
-const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+const BookMedicine: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <BookConsultationCard />
+      <UploadPrescription />
       <br />
     </View>
   );
@@ -25,4 +25,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default BookMedicine;
