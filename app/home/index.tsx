@@ -1,13 +1,24 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-
+import { View, Text, StyleSheet, StatusBar } from "react-native";
 import BookConsultationCard from "./components/Card";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView } from "react-native-gesture-handler";
+import { Background } from "./components/background";
 
 const HomeScreen = () => {
   return (
     <View style={styles.container}>
-      <BookConsultationCard />
-      <br />
+      <SafeAreaProvider>
+        <SafeAreaView style={styles.container} edges={["top"]}>
+          <ScrollView style={styles.scrollView}>
+            {/* Background Image and content */}
+            <Background />
+
+            {/* Consultation Card */}
+            <BookConsultationCard />
+          </ScrollView>
+        </SafeAreaView>
+      </SafeAreaProvider>
     </View>
   );
 };
@@ -15,13 +26,17 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    paddingTop: StatusBar.currentHeight,
+    backgroundColor: "white",
+    width: "100%",
   },
-  header: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
+  scrollView: {
+    flex: 1,
+    width: "100%",
+  },
+  text: {
+    fontSize: 42,
+    padding: 12,
   },
 });
 

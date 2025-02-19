@@ -1,11 +1,13 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Tabs } from "expo-router";
+import Octicons from "@expo/vector-icons/Octicons";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function TabLayout() {
   return (
     <Tabs screenOptions={{ tabBarActiveTintColor: "blue" }}>
       <Tabs.Screen
-        name="/home"
+        name="index"
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
@@ -13,12 +15,31 @@ export default function TabLayout() {
           ),
         }}
       />
+
       <Tabs.Screen
-        name="/setting"
+        name="notifications"
+        options={{
+          title: "Notificatios",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="notifications-outline" size={28} color="black" />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="reports"
+        options={{
+          title: "Reports",
+          tabBarIcon: ({ color }) => (
+            <Octicons name="report" size={28} color="black" />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="setting"
         options={{
           title: "Settings",
           tabBarIcon: ({ color }) => (
-            <FontAwesome size={28} name="cog" color={color} />
+            <FontAwesome size={28} name="cog" color="black" />
           ),
         }}
       />

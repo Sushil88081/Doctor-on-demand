@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 import React from "react";
-import DoctorCard from "../doctor/components/doctorListCard";
+import DoctorCard from "./components/doctorListCard";
 
 const DoctorPage = () => {
   return (

@@ -30,7 +30,7 @@ const Login = () => {
 
     console.log("Login Data:", value);
 
-    router.push("/home");
+    router.push("/(tabs)");
   };
 
   return (

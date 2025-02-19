@@ -48,6 +48,33 @@ const doctorsData: Doctor[] = [
     timeSchedule: "11:00 AM - 7:00 PM",
     imageUrl: "https://via.placeholder.com/150", // Replace with doctor image URL
   },
+  {
+    id: 4,
+    name: "Dr. Alice Johnson",
+    designation: "Pediatrician",
+    availability: "Online",
+    fees: "₹600",
+    timeSchedule: "11:00 AM - 7:00 PM",
+    imageUrl: "https://via.placeholder.com/150", // Replace with doctor image URL
+  },
+  {
+    id: 5,
+    name: "Dr. Alice Johnson",
+    designation: "Pediatrician",
+    availability: "Online",
+    fees: "₹600",
+    timeSchedule: "11:00 AM - 7:00 PM",
+    imageUrl: "https://via.placeholder.com/150", // Replace with doctor image URL
+  },
+  {
+    id: 6,
+    name: "Dr. Alice Johnson",
+    designation: "Pediatrician",
+    availability: "Online",
+    fees: "₹600",
+    timeSchedule: "11:00 AM - 7:00 PM",
+    imageUrl: "https://via.placeholder.com/150", // Replace with doctor image URL
+  },
 ];
 
 // Doctor Card Component
@@ -58,26 +85,33 @@ const DoctorCard: React.FC<{ doctor: Doctor }> = ({ doctor }) => {
   };
 
   return (
-    <View style={styles.card}>
-      <Image source={{ uri: doctor.imageUrl }} style={styles.doctorImage} />
-      <View style={styles.details}>
-        <Text style={styles.name}>{doctor.name}</Text>
-        <Text style={styles.designation}>{doctor.designation}</Text>
-        <Text
-          style={[
-            styles.availability,
-            doctor.availability === "Online" ? styles.online : styles.offline,
-          ]}
-        >
-          {doctor.availability}
-        </Text>
-        <Text style={styles.fees}>Fees: {doctor.fees}</Text>
-        <Text style={styles.timeSchedule}>Timings: {doctor.timeSchedule}</Text>
-        <TouchableOpacity style={styles.bookNowButton} onPress={handleBookNow}>
-          <Text style={styles.bookNowText}>Book Now</Text>
-        </TouchableOpacity>
+    <>
+      <View style={styles.card}>
+        <Image source={{ uri: doctor.imageUrl }} style={styles.doctorImage} />
+        <View style={styles.details}>
+          <Text style={styles.name}>{doctor.name}</Text>
+          <Text style={styles.designation}>{doctor.designation}</Text>
+          <Text
+            style={[
+              styles.availability,
+              doctor.availability === "Online" ? styles.online : styles.offline,
+            ]}
+          >
+            {doctor.availability}
+          </Text>
+          <Text style={styles.fees}>Fees: {doctor.fees}</Text>
+          <Text style={styles.timeSchedule}>
+            Timings: {doctor.timeSchedule}
+          </Text>
+          <TouchableOpacity
+            style={styles.bookNowButton}
+            onPress={handleBookNow}
+          >
+            <Text style={styles.bookNowText}>Book Now</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 
@@ -85,8 +119,19 @@ const DoctorCard: React.FC<{ doctor: Doctor }> = ({ doctor }) => {
 const App: React.FC = () => {
   return (
     <ScrollView style={styles.container}>
+      <Text
+        style={{
+          fontSize: 16,
+          fontWeight: "bold",
+          marginBottom: 10,
+        }}
+      >
+        Top Doctors
+      </Text>
       {doctorsData.map((doctor) => (
-        <DoctorCard key={doctor.id} doctor={doctor} />
+        <>
+          <DoctorCard key={doctor.id} doctor={doctor} />
+        </>
       ))}
     </ScrollView>
   );
