@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 // Define types for doctor data
 type Doctor = {
@@ -19,7 +20,7 @@ type Doctor = {
   imageUrl: string;
 };
 
-// Data for doctors
+// Sample doctor data
 const doctorsData: Doctor[] = [
   {
     id: 1,
@@ -28,7 +29,7 @@ const doctorsData: Doctor[] = [
     availability: "Online",
     fees: "₹500",
     timeSchedule: "10:00 AM - 6:00 PM",
-    imageUrl: "https://via.placeholder.com/150", // Replace with doctor image URL
+    imageUrl: "https://via.placeholder.com/150",
   },
   {
     id: 2,
@@ -37,103 +38,103 @@ const doctorsData: Doctor[] = [
     availability: "Offline",
     fees: "₹700",
     timeSchedule: "9:00 AM - 5:00 PM",
-    imageUrl: "https://via.placeholder.com/150", // Replace with doctor image URL
+    imageUrl: "https://via.placeholder.com/150",
   },
   {
     id: 3,
-    name: "Dr. Alice Johnson",
-    designation: "Pediatrician",
-    availability: "Online",
-    fees: "₹600",
-    timeSchedule: "11:00 AM - 7:00 PM",
-    imageUrl: "https://via.placeholder.com/150", // Replace with doctor image URL
+    name: "Dr. Jane Smith",
+    designation: "Dermatologist",
+    availability: "Offline",
+    fees: "₹700",
+    timeSchedule: "9:00 AM - 5:00 PM",
+    imageUrl: "https://via.placeholder.com/150",
   },
   {
     id: 4,
-    name: "Dr. Alice Johnson",
-    designation: "Pediatrician",
-    availability: "Online",
-    fees: "₹600",
-    timeSchedule: "11:00 AM - 7:00 PM",
-    imageUrl: "https://via.placeholder.com/150", // Replace with doctor image URL
+    name: "Dr. Jane Smith",
+    designation: "Dermatologist",
+    availability: "Offline",
+    fees: "₹700",
+    timeSchedule: "9:00 AM - 5:00 PM",
+    imageUrl: "https://via.placeholder.com/150",
   },
   {
     id: 5,
-    name: "Dr. Alice Johnson",
-    designation: "Pediatrician",
-    availability: "Online",
-    fees: "₹600",
-    timeSchedule: "11:00 AM - 7:00 PM",
-    imageUrl: "https://via.placeholder.com/150", // Replace with doctor image URL
+    name: "Dr. Jane Smith",
+    designation: "Dermatologist",
+    availability: "Offline",
+    fees: "₹700",
+    timeSchedule: "9:00 AM - 5:00 PM",
+    imageUrl: "https://via.placeholder.com/150",
   },
   {
     id: 6,
-    name: "Dr. Alice Johnson",
-    designation: "Pediatrician",
-    availability: "Online",
-    fees: "₹600",
-    timeSchedule: "11:00 AM - 7:00 PM",
-    imageUrl: "https://via.placeholder.com/150", // Replace with doctor image URL
+    name: "Dr. Jane Smith",
+    designation: "Dermatologist",
+    availability: "Offline",
+    fees: "₹700",
+    timeSchedule: "9:00 AM - 5:00 PM",
+    imageUrl: "https://via.placeholder.com/150",
+  },
+  {
+    id: 7,
+    name: "Dr. Jane Smith",
+    designation: "Dermatologist",
+    availability: "Offline",
+    fees: "₹700",
+    timeSchedule: "9:00 AM - 5:00 PM",
+    imageUrl: "https://via.placeholder.com/150",
   },
 ];
 
 // Doctor Card Component
-const DoctorCard: React.FC<{ doctor: Doctor }> = ({ doctor }) => {
+const DoctorCard: React.FC<{ doctor: Doctor }> = React.memo(({ doctor }) => {
   const handleBookNow = () => {
     console.log(`Booking appointment with ${doctor.name}`);
-    // Add navigation or booking logic here
   };
 
   return (
-    <>
-      <View style={styles.card}>
-        <Image source={{ uri: doctor.imageUrl }} style={styles.doctorImage} />
-        <View style={styles.details}>
-          <Text style={styles.name}>{doctor.name}</Text>
-          <Text style={styles.designation}>{doctor.designation}</Text>
-          <Text
-            style={[
-              styles.availability,
-              doctor.availability === "Online" ? styles.online : styles.offline,
-            ]}
-          >
-            {doctor.availability}
-          </Text>
-          <Text style={styles.fees}>Fees: {doctor.fees}</Text>
-          <Text style={styles.timeSchedule}>
-            Timings: {doctor.timeSchedule}
-          </Text>
-          <TouchableOpacity
-            style={styles.bookNowButton}
-            onPress={handleBookNow}
-          >
-            <Text style={styles.bookNowText}>Book Now</Text>
-          </TouchableOpacity>
-        </View>
+    <View style={styles.card}>
+      <Image
+        source={{ uri: doctor.imageUrl }}
+        style={styles.doctorImage}
+        accessibilityLabel={`Photo of ${doctor.name}`}
+      />
+      <View style={styles.details}>
+        <Text style={styles.name}>{doctor.name}</Text>
+        <Text style={styles.designation}>{doctor.designation}</Text>
+        <Text
+          style={[
+            styles.availability,
+            doctor.availability === "Online" ? styles.online : styles.offline,
+          ]}
+        >
+          {doctor.availability}
+        </Text>
+        <Text style={styles.fees}>Fees: {doctor.fees}</Text>
+        <Text style={styles.timeSchedule}>Timings: {doctor.timeSchedule}</Text>
+        <TouchableOpacity
+          style={styles.bookNowButton}
+          onPress={handleBookNow}
+          accessibilityLabel={`Book an appointment with ${doctor.name}`}
+        >
+          <Text style={styles.bookNowText}>Book Now</Text>
+        </TouchableOpacity>
       </View>
-    </>
+    </View>
   );
-};
+});
 
 // Main Component
 const App: React.FC = () => {
   return (
-    <ScrollView style={styles.container}>
-      <Text
-        style={{
-          fontSize: 16,
-          fontWeight: "bold",
-          marginBottom: 10,
-        }}
-      >
-        Top Doctors
-      </Text>
+    <View>
+      <Text style={styles.header}>Top Doctors</Text>
+
       {doctorsData.map((doctor) => (
-        <>
-          <DoctorCard key={doctor.id} doctor={doctor} />
-        </>
+        <DoctorCard key={doctor.id} doctor={doctor} />
       ))}
-    </ScrollView>
+    </View>
   );
 };
 
@@ -143,6 +144,16 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: "#f5f5f5",
+  },
+  header: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#333",
+    textAlign: "center",
+    marginBottom: 16,
+  },
+  scrollView: {
+    paddingBottom: 20,
   },
   card: {
     flexDirection: "row",
