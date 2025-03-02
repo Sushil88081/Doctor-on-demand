@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import React from "react";
 import {
   View,
@@ -91,6 +92,7 @@ const doctorsData: Doctor[] = [
 const DoctorCard: React.FC<{ doctor: Doctor }> = React.memo(({ doctor }) => {
   const handleBookNow = () => {
     console.log(`Booking appointment with ${doctor.name}`);
+    router.push("/doctorDetails");
   };
 
   return (
