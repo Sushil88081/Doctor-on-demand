@@ -1,4 +1,4 @@
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import React from "react";
 import {
   View,
@@ -90,11 +90,6 @@ const doctorsData: Doctor[] = [
 
 // Doctor Card Component
 const DoctorCard: React.FC<{ doctor: Doctor }> = React.memo(({ doctor }) => {
-  const handleBookNow = () => {
-    console.log(`Booking appointment with ${doctor.name}`);
-    router.push("/doctorDetails");
-  };
-
   return (
     <View style={styles.card}>
       <Image
@@ -115,13 +110,19 @@ const DoctorCard: React.FC<{ doctor: Doctor }> = React.memo(({ doctor }) => {
         </Text>
         <Text style={styles.fees}>Fees: {doctor.fees}</Text>
         <Text style={styles.timeSchedule}>Timings: {doctor.timeSchedule}</Text>
-        <TouchableOpacity
-          style={styles.bookNowButton}
-          onPress={handleBookNow}
-          accessibilityLabel={`Book an appointment with ${doctor.name}`}
+        <Link
+          href={{
+            pathname: "/doctorDetails/[id]",
+            params: { id: doctor.id },
+          }}
         >
-          <Text style={styles.bookNowText}>Book Now</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.bookNowButton}
+            accessibilityLabel={`Book an appointment with ${doctor.name}`}
+          >
+            <Text style={styles.bookNowText}>Book Now</Text>
+          </TouchableOpacity>
+        </Link>
       </View>
     </View>
   );
