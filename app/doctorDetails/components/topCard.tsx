@@ -1,8 +1,23 @@
 import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import React, { useState } from "react";
 
+// Define types for the data
+interface Day {
+  day: string;
+  date: string;
+}
+
+interface TimeSlot {
+  time: string;
+}
+
 export default function TopCard() {
-  const days = [
+  // Define state types
+  const [selectedDay, setSelectedDay] = useState<string | null>(null);
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+
+  // Days and Time Slots
+  const days: Day[] = [
     { day: "Sunday", date: "10 Mar" },
     { day: "Monday", date: "11 Mar" },
     { day: "Tuesday", date: "12 Mar" },
@@ -12,7 +27,7 @@ export default function TopCard() {
     { day: "Saturday", date: "16 Mar" },
   ];
 
-  const timeSlots = [
+  const timeSlots: string[] = [
     "10:00 AM",
     "11:00 AM",
     "12:00 PM",
@@ -23,10 +38,6 @@ export default function TopCard() {
     "5:00 PM",
     "6:00 PM",
   ];
-
-  // ✅ State to track selected day & time
-  const [selectedDay, setSelectedDay] = useState(null);
-  const [selectedTime, setSelectedTime] = useState(null);
 
   return (
     <ScrollView
