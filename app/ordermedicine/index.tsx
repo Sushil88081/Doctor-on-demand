@@ -6,7 +6,7 @@ const OrderMedicine: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <MedicineList />
-      <br />
+
     </View>
   );
 };

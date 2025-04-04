@@ -7,7 +7,7 @@ const BookMedicine: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <UploadPrescription />
-      <br />
+
     </View>
   );
 };

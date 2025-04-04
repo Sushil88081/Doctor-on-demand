@@ -1,12 +1,12 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const ArticleScreen = () => {
+const Admin = () => {
   return (
     <View>
-      <Text>Articles comming soon....</Text>
+      <Text>Admin</Text>
     </View>
   );
 };
 
-export default ArticleScreen;
+export default Admin;

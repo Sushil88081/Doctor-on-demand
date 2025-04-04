@@ -3,9 +3,10 @@ import React from "react";
 import DoctorCard from "./components/doctorListCard";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
-
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 const DoctorPage = () => {
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
     <View style={styles.container}>
       <SafeAreaProvider>
         <SafeAreaView style={styles.container} edges={["top"]}>
@@ -14,7 +15,9 @@ const DoctorPage = () => {
           </ScrollView>
         </SafeAreaView>
       </SafeAreaProvider>
+
     </View>
+      </GestureHandlerRootView>
   );
 };
 

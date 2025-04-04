@@ -4,7 +4,7 @@ import Setting from "../setting";
 
 export default function Tab() {
   return (
-    <View style={styles.container}>
+    <View>
       <Setting />
     </View>
   );

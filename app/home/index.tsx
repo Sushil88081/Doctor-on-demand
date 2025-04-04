@@ -1,43 +1,63 @@
 import React from "react";
-import { View, Text, StyleSheet, StatusBar } from "react-native";
+import { View, StyleSheet, StatusBar } from "react-native";
 import BookConsultationCard from "./components/Card";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView } from "react-native-gesture-handler";
+import {
+  GestureHandlerRootView,
+  ScrollView,
+} from "react-native-gesture-handler";
 import { Background } from "./components/background";
+import HealthArticles from "./components/articles";
+import HorizontalOptions from "./components/horizontaloptions";
 
 const HomeScreen = () => {
   return (
-    <View style={styles.container}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <SafeAreaView style={styles.container} edges={["top"]}>
-          <ScrollView style={styles.scrollView}>
-            {/* Background Image and content */}
-            <Background />
+        <SafeAreaView style={styles.safeArea} edges={["top"]}>
+          <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+          <ScrollView contentContainerStyle={styles.scrollContent}>
+            <View style={styles.section}>
+              <Background />
+            </View>
 
-            {/* Consultation Card */}
-            <BookConsultationCard />
+            <View style={styles.section}>
+              <HorizontalOptions />
+            </View>
+            <View style={styles.section}>
+              <BookConsultationCard />
+            </View>
+
+            <View style={styles.section}>
+              <HealthArticles />
+            </View>
           </ScrollView>
         </SafeAreaView>
       </SafeAreaProvider>
-    </View>
+    </GestureHandlerRootView>
   );
 };
 
+export default HomeScreen;
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight,
-    backgroundColor: "white",
-    width: "100%",
+    backgroundColor: "#fff",
   },
-  scrollView: {
-    flex: 1,
-    width: "100%",
+  scrollContent: {
+    paddingBottom: 20,
+    paddingHorizontal: 16,
+    gap: 20, // vertical spacing between blocks
   },
-  text: {
-    fontSize: 42,
-    padding: 12,
+  section: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
 });
-
-export default HomeScreen;
