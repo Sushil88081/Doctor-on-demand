@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
   placeholderText: { fontSize: 16, color: "gray", marginBottom: 10 },
   uploadButton: {
-    backgroundColor: "#28a745",
+    backgroundColor: "indigo",
     padding: 10,
     borderRadius: 5,
     marginTop: 10,

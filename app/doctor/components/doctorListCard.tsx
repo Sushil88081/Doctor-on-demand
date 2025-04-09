@@ -1,5 +1,7 @@
 import { Link, router } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Doctor } from "../doctorSlice";
 import {
   View,
   Text,
@@ -9,97 +11,100 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { RootState } from "../../store/index";
+import { fetchDoctors } from "../doctorSlice";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 
 // Define types for doctor data
-type Doctor = {
-  id: number;
-  name: string;
-  designation: string;
-  availability: "Online" | "Offline";
-  fees: string;
-  timeSchedule: string;
-  imageUrl: string;
-};
+// type Doctor = {
+//   id: number;
+//   name: string;
+//   designation: string;
+//   availability: "Online" | "Offline";
+//   fees: string;
+//   timeSchedule: string;
+//   imageUrl: string;
+// };
 
-// Sample doctor data
-const doctorsData: Doctor[] = [
-  {
-    id: 1,
-    name: "Dr. John Doe",
-    designation: "Cardiologist",
-    availability: "Online",
-    fees: "₹500",
-    timeSchedule: "10:00 AM - 6:00 PM",
-    imageUrl: "https://via.placeholder.com/150",
-  },
-  {
-    id: 2,
-    name: "Dr. Jane Smith",
-    designation: "Dermatologist",
-    availability: "Offline",
-    fees: "₹700",
-    timeSchedule: "9:00 AM - 5:00 PM",
-    imageUrl: "https://via.placeholder.com/150",
-  },
-  {
-    id: 3,
-    name: "Dr. Jane Smith",
-    designation: "Dermatologist",
-    availability: "Offline",
-    fees: "₹700",
-    timeSchedule: "9:00 AM - 5:00 PM",
-    imageUrl: "https://via.placeholder.com/150",
-  },
-  {
-    id: 4,
-    name: "Dr. Jane Smith",
-    designation: "Dermatologist",
-    availability: "Offline",
-    fees: "₹700",
-    timeSchedule: "9:00 AM - 5:00 PM",
-    imageUrl: "https://via.placeholder.com/150",
-  },
-  {
-    id: 5,
-    name: "Dr. Jane Smith",
-    designation: "Dermatologist",
-    availability: "Offline",
-    fees: "₹700",
-    timeSchedule: "9:00 AM - 5:00 PM",
-    imageUrl: "https://via.placeholder.com/150",
-  },
-  {
-    id: 6,
-    name: "Dr. Jane Smith",
-    designation: "Dermatologist",
-    availability: "Offline",
-    fees: "₹700",
-    timeSchedule: "9:00 AM - 5:00 PM",
-    imageUrl: "https://via.placeholder.com/150",
-  },
-  {
-    id: 7,
-    name: "Dr. Jane Smith",
-    designation: "Dermatologist",
-    availability: "Offline",
-    fees: "₹700",
-    timeSchedule: "9:00 AM - 5:00 PM",
-    imageUrl: "https://via.placeholder.com/150",
-  },
-];
+// // Sample doctor data
+// const doctorsData: Doctor[] = [
+//   {
+//     id: 1,
+//     name: "Dr. John Doe",
+//     designation: "Cardiologist",
+//     availability: "Online",
+//     fees: "₹500",
+//     timeSchedule: "10:00 AM - 6:00 PM",
+//     imageUrl: "https://via.placeholder.com/150",
+//   },
+//   {
+//     id: 2,
+//     name: "Dr. Jane Smith",
+//     designation: "Dermatologist",
+//     availability: "Offline",
+//     fees: "₹700",
+//     timeSchedule: "9:00 AM - 5:00 PM",
+//     imageUrl: "https://via.placeholder.com/150",
+//   },
+//   {
+//     id: 3,
+//     name: "Dr. Jane Smith",
+//     designation: "Dermatologist",
+//     availability: "Offline",
+//     fees: "₹700",
+//     timeSchedule: "9:00 AM - 5:00 PM",
+//     imageUrl: "https://via.placeholder.com/150",
+//   },
+//   {
+//     id: 4,
+//     name: "Dr. Jane Smith",
+//     designation: "Dermatologist",
+//     availability: "Offline",
+//     fees: "₹700",
+//     timeSchedule: "9:00 AM - 5:00 PM",
+//     imageUrl: "https://via.placeholder.com/150",
+//   },
+//   {
+//     id: 5,
+//     name: "Dr. Jane Smith",
+//     designation: "Dermatologist",
+//     availability: "Offline",
+//     fees: "₹700",
+//     timeSchedule: "9:00 AM - 5:00 PM",
+//     imageUrl: "https://via.placeholder.com/150",
+//   },
+//   {
+//     id: 6,
+//     name: "Dr. Jane Smith",
+//     designation: "Dermatologist",
+//     availability: "Offline",
+//     fees: "₹700",
+//     timeSchedule: "9:00 AM - 5:00 PM",
+//     imageUrl: "https://via.placeholder.com/150",
+//   },
+//   {
+//     id: 7,
+//     name: "Dr. Jane Smith",
+//     designation: "Dermatologist",
+//     availability: "Offline",
+//     fees: "₹700",
+//     timeSchedule: "9:00 AM - 5:00 PM",
+//     imageUrl: "https://via.placeholder.com/150",
+//   },
+// ];
 
 // Doctor Card Component
 const DoctorCard: React.FC<{ doctor: Doctor }> = React.memo(({ doctor }) => {
   return (
     <View style={styles.card}>
       <Image
-        source={{ uri: doctor.imageUrl }}
+        source={{ uri: doctor.image }}
         style={styles.doctorImage}
         accessibilityLabel={`Photo of ${doctor.name}`}
       />
       <View style={styles.details}>
         <Text style={styles.name}>{doctor.name}</Text>
-        <Text style={styles.designation}>{doctor.designation}</Text>
+        <Text style={styles.designation}>{doctor.specialization}</Text>
         <Text
           style={[
             styles.availability,
@@ -108,8 +113,8 @@ const DoctorCard: React.FC<{ doctor: Doctor }> = React.memo(({ doctor }) => {
         >
           {doctor.availability}
         </Text>
-        <Text style={styles.fees}>Fees: {doctor.fees}</Text>
-        <Text style={styles.timeSchedule}>Timings: {doctor.timeSchedule}</Text>
+        <Text style={styles.fees}>Fees: {doctor.fee}</Text>
+        <Text style={styles.timeSchedule}>Timings: {doctor.schedule}</Text>
         <Link
           href={{
             pathname: "/doctorDetails/[id]",
@@ -130,11 +135,19 @@ const DoctorCard: React.FC<{ doctor: Doctor }> = React.memo(({ doctor }) => {
 
 // Main Component
 const App: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const doctors = useAppSelector((state) => state.doctor.doctors);
+
+  console.log("list of doctors", doctors);
+  useEffect(() => {
+    dispatch(fetchDoctors());
+  }, [dispatch]);
   return (
     <View>
       <Text style={styles.header}>Top Doctors</Text>
+      {/* {loading && <Text>Loading...</Text>} */}
 
-      {doctorsData.map((doctor) => (
+      {doctors.map((doctor) => (
         <DoctorCard key={doctor.id} doctor={doctor} />
       ))}
     </View>

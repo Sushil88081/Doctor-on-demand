@@ -1,27 +1,64 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-interface InitialState {
-  value: number;
+// src/redux/slices/doctorSlice.ts
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+export interface Doctor {
+  id: number;
+  name: string;
+  specialization: string;
+  phone: string;
+  email: string;
+  image: string;
+  fee: number;
+  schedule: string;
+  availability: string;
+  created_at: string; // or Date if you parse it
 }
 
-const initialState: InitialState = {
-  value: 0,
+interface DoctorState {
+  doctors: Doctor[];
+  loading: boolean;
+  error: string | null;
+}
+
+const initialState: DoctorState = {
+  doctors: [],
+  loading: false,
+  error: null,
 };
 
-export const counterSlice = createSlice({
-  name: "doctorList",
+// Async action using Axios
+export const fetchDoctors = createAsyncThunk<Doctor[]>(
+  "doctors/fetchDoctors",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get("http://192.168.1.11:8080/doctors");
+      return response.data;
+    } catch (err: any) {
+      return rejectWithValue(err.message || "Failed to fetch doctors");
+    }
+  }
+);
+
+const doctorSlice = createSlice({
+  name: "doctors",
   initialState,
-  reducers: {
-    increment: (state) => {
-      state.value += 1;
-    },
-    decrement: (state) => {
-      state.value -= 1;
-    },
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchDoctors.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchDoctors.fulfilled, (state, action) => {
+        state.loading = false;
+        state.doctors = action.payload;
+      })
+      .addCase(fetchDoctors.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
   },
 });
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions;
-export default counterSlice.reducer;
+export default doctorSlice.reducer;

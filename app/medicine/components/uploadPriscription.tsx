@@ -46,10 +46,16 @@ const UploadPrescription = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, alignItems: "center" },
+  container: {
+    flex: 1,
+    padding: 20,
+    alignItems: "center",
+    backgroundColor: "#cfdbfd",
+    width: "100%",
+  },
   heading: { fontSize: 22, fontWeight: "bold", marginBottom: 20 },
   orderButton: {
-    backgroundColor: "#007bff",
+    backgroundColor: "indigo",
     padding: 12,
     borderRadius: 5,
     marginTop: 20,
