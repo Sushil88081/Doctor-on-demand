@@ -6,19 +6,38 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  Image,
 } from "react-native";
 
 const medicines = [
-  { id: "1", name: "Paracetamol", type: "Tablet", price: 25, stock: true },
-  { id: "2", name: "Ibuprofen", type: "Tablet", price: 40, stock: true },
-  { id: "3", name: "Amoxicillin", type: "Capsule", price: 60, stock: false },
-  { id: "4", name: "Cetirizine", type: "Tablet", price: 30, stock: true },
-  { id: "5", name: "Azithromycin", type: "Tablet", price: 80, stock: true },
-  { id: "6", name: "Pantoprazole", type: "Capsule", price: 50, stock: true },
-  { id: "7", name: "Montelukast", type: "Tablet", price: 70, stock: false },
-  { id: "8", name: "Diclofenac", type: "Gel", price: 90, stock: true },
-  { id: "9", name: "Ranitidine", type: "Tablet", price: 35, stock: true },
-  { id: "10", name: "Dextromethorphan", type: "Syrup", price: 55, stock: true },
+  {
+    id: "1",
+    name: "Paracetamol",
+    type: "Tablet",
+    price: 25,
+    stock: true,
+    image: "https://via.placeholder.com/100",
+    quantity: 10,
+  },
+  {
+    id: "2",
+    name: "Ibuprofen",
+    type: "Tablet",
+    price: 40,
+    stock: true,
+    image: "https://via.placeholder.com/100",
+    quantity: 5,
+  },
+  {
+    id: "3",
+    name: "Amoxicillin",
+    type: "Capsule",
+    price: 60,
+    stock: false,
+    image: "https://via.placeholder.com/100",
+    quantity: 0,
+  },
+  // ... add similar entries for the rest
 ];
 
 const MedicineList = () => {
@@ -47,19 +66,23 @@ const MedicineList = () => {
         data={medicines}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.itemContainer}>
-            <Text style={styles.item}>
-              {item.name} ({item.type}) - ₹{item.price}
-            </Text>
-            <TouchableOpacity
-              style={[styles.button, !item.stock && styles.outOfStockButton]}
-              onPress={() => handleOrder(item)}
-              disabled={!item.stock}
-            >
-              <Text style={styles.buttonText}>
-                {item.stock ? "Order" : "Out of Stock"}
-              </Text>
-            </TouchableOpacity>
+          <View style={styles.card}>
+            <Image source={{ uri: item.image }} style={styles.image} />
+            <View style={styles.cardContent}>
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.details}>Type: {item.type}</Text>
+              <Text style={styles.details}>Price: ₹{item.price}</Text>
+              <Text style={styles.details}>Quantity: {item.quantity}</Text>
+              <TouchableOpacity
+                style={[styles.button, !item.stock && styles.outOfStockButton]}
+                onPress={() => handleOrder(item)}
+                disabled={!item.stock}
+              >
+                <Text style={styles.buttonText}>
+                  {item.stock ? "Order" : "Out of Stock"}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         )}
       />
@@ -68,18 +91,66 @@ const MedicineList = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
-  heading: { fontSize: 22, fontWeight: "bold", marginBottom: 10 },
-  itemContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 10,
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: "#f2f2f2",
+    width: "100%",
   },
-  item: { fontSize: 16 },
-  button: { backgroundColor: "#28a745", padding: 8, borderRadius: 5 },
-  outOfStockButton: { backgroundColor: "#d9534f" },
-  buttonText: { color: "#fff", fontSize: 14, fontWeight: "bold" },
+  heading: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+    alignSelf: "center",
+  },
+  card: {
+    flexDirection: "row",
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    marginBottom: 15,
+    padding: 12,
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+  },
+  image: {
+    width: 80,
+    height: 80,
+    borderRadius: 8,
+    marginRight: 12,
+  },
+  cardContent: {
+    flex: 1,
+    justifyContent: "space-between",
+  },
+  name: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 4,
+  },
+  details: {
+    fontSize: 14,
+    color: "#555",
+    marginBottom: 2,
+  },
+  button: {
+    marginTop: 8,
+    backgroundColor: "indigo",
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 6,
+    alignSelf: "flex-start",
+  },
+  outOfStockButton: {
+    backgroundColor: "#d9534f",
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 14,
+  },
 });
 
 export default MedicineList;

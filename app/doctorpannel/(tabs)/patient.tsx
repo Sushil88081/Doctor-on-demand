@@ -1,12 +1,13 @@
 import { View, Text } from "react-native";
 import React from "react";
+import Patient from "../patient";
 
-const DoctorPannel = () => {
+const PatientTab = () => {
   return (
     <View>
-      <Text>Docotr Pannel</Text>
+      <Patient />
     </View>
   );
 };
 
-export default DoctorPannel;
+export default PatientTab;

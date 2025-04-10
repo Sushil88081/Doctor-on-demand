@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     marginVertical: 10,
+    width: "100%",
   },
   header: {
     fontSize: 18,
@@ -69,6 +70,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   card: {
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#f8f8f8",
