@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,8 +6,12 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { fetchArticles, togglePinArticle } from "../homeSlice";
 
 type Article = {
   id: string;
@@ -17,53 +21,58 @@ type Article = {
   pinned: boolean;
 };
 
-const sampleArticles: Article[] = [
-  {
-    id: "1",
-    title: "5 Tips for a Healthy Heart",
-    description: "Simple ways to keep your heart in great shape.",
-    imageUrl: "https://via.placeholder.com/150",
-    pinned: false,
-  },
-  {
-    id: "2",
-    title: "Boost Immunity Naturally",
-    description: "Discover natural ways to strengthen your immune system.",
-    imageUrl: "https://via.placeholder.com/150",
-    pinned: true,
-  },
-  {
-    id: "3",
-    title: "Daily Yoga Routine",
-    description: "Stretch and strengthen with this simple routine.",
-    imageUrl: "https://via.placeholder.com/150",
-    pinned: false,
-  },
-  {
-    id: "4",
-    title: "Hydration Matters",
-    description: "Why drinking water is more important than you think.",
-    imageUrl: "https://via.placeholder.com/150",
-    pinned: false,
-  },
-  {
-    id: "5",
-    title: "Mindful Eating",
-    description: "Improve digestion with mindfulness techniques.",
-    imageUrl: "https://via.placeholder.com/150",
-    pinned: false,
-  },
-];
-
 const HealthArticles: React.FC = () => {
-  const [articles, setArticles] = useState<Article[]>(sampleArticles);
+  const dispatch = useAppDispatch();
+  const {
+    articles: apiArticles,
+    loading,
+    error,
+  } = useAppSelector((state) => state.article);
+  const [refreshing, setRefreshing] = useState(false);
+
+  // Transform API data to match component's expected format
+  const transformedArticles: Article[] = apiArticles.map((article) => ({
+    id: article.ID.toString(),
+    title: article.title,
+    description: article.desc,
+    imageUrl: article.image || "https://via.placeholder.com/150",
+    pinned: article.pin === true || false,
+  }));
 
   const togglePin = (id: string) => {
-    const updated = articles.map((article) =>
-      article.id === id ? { ...article, pinned: !article.pinned } : article
-    );
-    setArticles(updated);
+    console.log("Toggling pin for article:", id);
+    dispatch(togglePinArticle(id));
   };
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    dispatch(fetchArticles())
+      .unwrap()
+      .finally(() => setRefreshing(false));
+  };
+
+  useEffect(() => {
+    dispatch(fetchArticles());
+  }, [dispatch]);
+
+  if (loading && !refreshing) {
+    return (
+      <View style={styles.center}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.center}>
+        <Text style={styles.error}>Error: {error}</Text>
+        <TouchableOpacity onPress={handleRefresh}>
+          <Text style={styles.retry}>Retry</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -77,7 +86,7 @@ const HealthArticles: React.FC = () => {
 
       {/* Articles List */}
       <FlatList
-        data={articles}
+        data={transformedArticles}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.card}>
@@ -88,21 +97,27 @@ const HealthArticles: React.FC = () => {
             </View>
             <TouchableOpacity onPress={() => togglePin(item.id)}>
               <Feather
-                name={item.pinned ? "bookmark" : "bookmark"}
+                name="bookmark"
                 size={22}
-                color={item.pinned ? "#4a90e2" : "#ccc"}
+                color={item.pinned ? "blue" : "red"}
               />
             </TouchableOpacity>
           </View>
         )}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            colors={["#4a90e2"]}
+            tintColor="#4a90e2"
+          />
+        }
       />
     </View>
   );
 };
-
-export default HealthArticles;
 
 const styles = StyleSheet.create({
   container: {
@@ -157,4 +172,19 @@ const styles = StyleSheet.create({
     color: "#666",
     marginTop: 2,
   },
+  center: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  error: {
+    color: "red",
+    marginBottom: 10,
+  },
+  retry: {
+    color: "#4a90e2",
+    fontSize: 16,
+  },
 });
+
+export default HealthArticles;

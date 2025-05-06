@@ -95,6 +95,10 @@ import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 
 // Doctor Card Component
 const DoctorCard: React.FC<{ doctor: Doctor }> = React.memo(({ doctor }) => {
+  const handlePress = () => {
+    router.push(`/doctorDetails/${doctor.ID}`);
+    console.log("doctor list", doctor.email);
+  };
   return (
     <View style={styles.card}>
       <Image
@@ -115,19 +119,14 @@ const DoctorCard: React.FC<{ doctor: Doctor }> = React.memo(({ doctor }) => {
         </Text>
         <Text style={styles.fees}>Fees: {doctor.fee}</Text>
         <Text style={styles.timeSchedule}>Timings: {doctor.schedule}</Text>
-        <Link
-          href={{
-            pathname: "/doctorDetails/[id]",
-            params: { id: doctor.id },
-          }}
+
+        <TouchableOpacity
+          onPress={handlePress}
+          style={styles.bookNowButton}
+          accessibilityLabel={`Book an appointment with ${doctor.name}`}
         >
-          <TouchableOpacity
-            style={styles.bookNowButton}
-            accessibilityLabel={`Book an appointment with ${doctor.name}`}
-          >
-            <Text style={styles.bookNowText}>Book Now</Text>
-          </TouchableOpacity>
-        </Link>
+          <Text style={styles.bookNowText}>Book Now</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -148,7 +147,7 @@ const App: React.FC = () => {
       {/* {loading && <Text>Loading...</Text>} */}
 
       {doctors.map((doctor) => (
-        <DoctorCard key={doctor.id} doctor={doctor} />
+        <DoctorCard key={doctor.ID} doctor={doctor} />
       ))}
     </View>
   );

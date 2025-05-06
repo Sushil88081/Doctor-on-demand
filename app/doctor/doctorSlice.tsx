@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export interface Doctor {
-  id: number;
+  ID: number;
   name: string;
   specialization: string;
   phone: string;
@@ -32,7 +32,7 @@ export const fetchDoctors = createAsyncThunk<Doctor[]>(
   "doctors/fetchDoctors",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("http://192.168.1.11:8080/doctors");
+      const response = await axios.get("http://192.168.1.9:8080/doctors");
       return response.data;
     } catch (err: any) {
       return rejectWithValue(err.message || "Failed to fetch doctors");
