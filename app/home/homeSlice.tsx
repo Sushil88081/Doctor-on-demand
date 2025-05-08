@@ -7,6 +7,8 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 
+
+
 export interface Article {
   ID: number;
   CreatedAt: string;
@@ -31,12 +33,12 @@ const initialState: ArticlesState = {
   loading: false,
   error: null,
 };
-
+const URI=process.env.EXPO_PUBLIC_API_URL;
 export const fetchArticles = createAsyncThunk(
   "articles/fetchArticles",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("http://192.168.1.14:8080/articles");
+      const response = await axios.get(`${URI}/articles`);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {

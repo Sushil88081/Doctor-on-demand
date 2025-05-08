@@ -9,11 +9,11 @@ const DoctorDetailsScreen = () => {
   const { id } = useLocalSearchParams(); // Get the doctor id from URL param
   const [doctor, setDoctor] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-
+  const URI=process.env.EXPO_PUBLIC_API_URL;
   useEffect(() => {
     if (id) {
       axios
-        .get(`http://192.168.1.9:8080/doctor/${id}`) // Adjust this to your real endpoint
+        .get(`${URI}/doctor/${id}`) // Adjust this to your real endpoint
         .then((response) => {
           setDoctor(response.data);
         })

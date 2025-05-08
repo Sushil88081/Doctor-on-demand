@@ -26,13 +26,14 @@ const initialState: DoctorState = {
   loading: false,
   error: null,
 };
+const URI=process.env.EXPO_PUBLIC_API_URL;
 
 // Async action using Axios
 export const fetchDoctors = createAsyncThunk<Doctor[]>(
   "doctors/fetchDoctors",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("http://192.168.1.9:8080/doctors");
+      const response = await axios.get(`${URI}/doctors`);
       return response.data;
     } catch (err: any) {
       return rejectWithValue(err.message || "Failed to fetch doctors");
