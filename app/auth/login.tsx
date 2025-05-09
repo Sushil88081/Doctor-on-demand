@@ -36,18 +36,18 @@ const Login = () => {
       const response = await dispatch(loginUser({ email, password })).unwrap();
       console.log("reponse lgin api me",response); // Logging the response for debugging
       
-router.navigate("/(tabs)");
-      // Handle the response from the API call
-      // You can navigate to different screens based on the response
-      // For example, if the response is successful, navigate to the home screen
-      // Redirect based on user role
-      // if (response === "Login successful") {
-      //   router.navigate("/(tabs)");
-      // } else if (response.role === "doctor") {
-      //   router.push("/doctorpannel");
-      // } else if (response.role === "admin") {
-      //   router.push("/admin");
-      // }
+// router.navigate("/(tabs)");
+//       // Handle the response from the API call
+//       // You can navigate to different screens based on the response
+//       // For example, if the response is successful, navigate to the home screen
+//       // Redirect based on user role
+      if (response.role ==="patient"||response.role==="") {
+        router.navigate("/(tabs)");
+      } else if (response.role === "doctor") {
+        router.push("/doctorpannel");
+      } else if (response.role === "admin") {
+        router.push("/admin");
+      }
     } catch (err: any) {
       Alert.alert("Login Failed", err);
     }

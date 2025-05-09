@@ -25,12 +25,13 @@ const initialState: PatientState = {
   loading: false,
   error: null,
 };
+const URI=process.env.EXPO_PUBLIC_API_URL;
 
 export const fetchPatients = createAsyncThunk(
   "patients/fetchAll",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("http://192.168.241.56:8080/patients");
+      const response = await axios.get(`${URI}/patients`);
       return response.data;
     } catch (error) {
       return rejectWithValue(

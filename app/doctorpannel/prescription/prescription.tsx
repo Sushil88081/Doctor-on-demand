@@ -1,4 +1,4 @@
-// app/prescription/PrescriptionFormScreen.tsx
+// app/prescriptions/PrescriptionFormScreen.tsx
 import React, { useState } from "react";
 import {
   View,
@@ -9,28 +9,57 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
+import { useAppDispatch } from "@/app/store/hooks";
+import { createPrescription } from "./prescriptionSlice";
+
 
 const PrescriptionFormScreen = () => {
+  const dispatch = useAppDispatch();
   const [patientName, setPatientName] = useState("");
+  const [doctorName, setDoctorName] = useState("");
   const [symptoms, setSymptoms] = useState("");
   const [diagnosis, setDiagnosis] = useState("");
   const [medicine, setMedicine] = useState("");
   const [notes, setNotes] = useState("");
 
-  const handleSubmit = () => {
-    if (!patientName || !symptoms || !diagnosis || !medicine) {
+  const handleSubmit = async () => {
+    console.log("Submitted");
+    if (!patientName || !doctorName || !symptoms || !diagnosis || !medicine) {
       Alert.alert("Missing Fields", "Please fill all required fields.");
       return;
     }
 
-    // Send to backend here...
+    const newPrescription = {
+      patient_id: 1, // This should be dynamically set based on selected patient
+      doctor_id: 1,  // This should be dynamically set based on logged-in doctor
+      patient_name: patientName,
+      doctor_name: doctorName,
+      pdf_path: "",  // You can populate this later if you generate a PDF
+      medications: [
+        {
+          name: medicine,
+          dosage: "500mg",
+          form: "Tablet",
+          frequency: "Thrice Daily",
+          duration: "5 Days",
+          special_instructions: notes,
+          before_after_food: "After Food",
+        },
+      ],
+    };
 
-    Alert.alert("Success", "Prescription submitted!");
-    setPatientName("");
-    setSymptoms("");
-    setDiagnosis("");
-    setMedicine("");
-    setNotes("");
+    try {
+      await dispatch(createPrescription(newPrescription)).unwrap();
+      Alert.alert("Success", "Prescription created successfully!");
+      setPatientName("");
+      setDoctorName("");
+      setSymptoms("");
+      setDiagnosis("");
+      setMedicine("");
+      setNotes("");
+    } catch (error: any) {
+      Alert.alert("Error", error.message || "Failed to create prescription");
+    }
   };
 
   return (
@@ -43,6 +72,14 @@ const PrescriptionFormScreen = () => {
         placeholder="e.g. Ravi Kumar"
         value={patientName}
         onChangeText={setPatientName}
+      />
+
+      <Text style={styles.label}>Doctor Name</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="e.g. Dr. Smith"
+        value={doctorName}
+        onChangeText={setDoctorName}
       />
 
       <Text style={styles.label}>Symptoms</Text>

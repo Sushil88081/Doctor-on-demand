@@ -1,3 +1,5 @@
+import { RootState } from "@/app/store";
+import { useAppSelector } from "@/app/store/hooks";
 import React, { useState } from "react";
 import {
   View,
@@ -11,9 +13,12 @@ import {
 } from "react-native";
 
 const DoctorProfileScreen = () => {
-  const [name, setName] = useState("Dr. Rajeev Singh");
-  const [email, setEmail] = useState("rajeev@example.com");
-  const [phone, setPhone] = useState("9876543210");
+  
+  const user = useAppSelector((state: RootState) => state.auth.user);
+  console.log("user hai", user);
+  const [name, setName] = useState(user?.name || "");
+  const [email, setEmail] = useState(user?.email || "");
+  const [phone, setPhone] = useState(user?.mobile || "");
   const [specialization, setSpecialization] = useState("Cardiologist");
   const [fee, setFee] = useState("500");
   const [image, setImage] = useState(
