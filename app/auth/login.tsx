@@ -2,30 +2,20 @@ import React, { useState } from "react";
 import { View, Text, Image, TextInput, Alert, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import Mybutton from "@/components/mybutton";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store";
+import { loginUser } from "./authSlice";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 
-// Mock function to simulate API login
-const mockLoginApi = async (email: string, password: string) => {
-  // Example user roles based on email (replace this with real API call)
-  const users = {
-    "patient@example.com": "patient",
-    "doctor@example.com": "doctor",
-    "admin@example.com": "admin",
-  };
-
-  return new Promise<{ role: string }>((resolve, reject) => {
-    setTimeout(() => {
-      if (users[email]) {
-        resolve({ role: users[email] });
-      } else {
-        reject("Invalid credentials");
-      }
-    }, 1000);
-  });
-};
 
 const Login = () => {
   const [value, setValue] = useState({ email: "", password: "" });
   const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  
+  // Getting loading and error states from Redux
+  const { loading, error, user } = useAppSelector((state: RootState) => state.auth);
 
   // Handle input changes
   const handleInputChange = (field: string, text: string) => {
@@ -42,18 +32,24 @@ const Login = () => {
     }
 
     try {
-      const response = await mockLoginApi(email, password);
-
+      // ➡️ Dispatching the login API call
+      const response = await dispatch(loginUser({ email, password })).unwrap();
+      console.log("reponse lgin api me",response); // Logging the response for debugging
+      
+router.navigate("/(tabs)");
+      // Handle the response from the API call
+      // You can navigate to different screens based on the response
+      // For example, if the response is successful, navigate to the home screen
       // Redirect based on user role
-      if (response.role === "patient") {
-        router.navigate("/(tabs)");
-      } else if (response.role === "doctor") {
-        router.push("/doctorpannel");
-      } else if (response.role === "admin") {
-        router.push("/admin");
-      }
-    } catch (error) {
-      Alert.alert("Login Failed", "Invalid email or password.");
+      // if (response === "Login successful") {
+      //   router.navigate("/(tabs)");
+      // } else if (response.role === "doctor") {
+      //   router.push("/doctorpannel");
+      // } else if (response.role === "admin") {
+      //   router.push("/admin");
+      // }
+    } catch (err: any) {
+      Alert.alert("Login Failed", err);
     }
   };
 
@@ -82,7 +78,8 @@ const Login = () => {
           onChangeText={(text) => handleInputChange("password", text)}
         />
 
-        <Mybutton title={"Login"} onPress={handleLogin} />
+        <Mybutton title={loading ? "Logging in..." : "Login"} onPress={handleLogin} />
+        {error && <Text style={styles.errorText}>{error}</Text>}
       </View>
     </View>
   );
@@ -114,6 +111,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: "gray",
     borderWidth: 1,
+  },
+  errorText: {
+    color: "red",
+    marginTop: 10,
   },
 });
 

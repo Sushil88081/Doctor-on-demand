@@ -16,6 +16,8 @@ import {
   AntDesign,
 } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { useAppSelector } from "@/app/store/hooks";
+import { RootState } from "@/app/store";
 
 type MenuItem = {
   id: string;
@@ -25,26 +27,22 @@ type MenuItem = {
 };
 
 const ProfilePage = () => {
+  const user = useAppSelector((state: RootState) => state.auth.user);
   const router = useRouter();
 
   const menuItems: MenuItem[] = [
-    {
-      id: "1",
-      title: "My Saved",
-      icon: <MaterialIcons name="bookmark-border" size={24} color="#333" />,
-      onPress: () => router.push("/saved"),
-    },
+    
     {
       id: "2",
-      title: "Appointments",
+      title: "Book Consultation",
       icon: <FontAwesome name="calendar" size={24} color="#333" />,
-      onPress: () => router.push("/appointments"),
+      onPress: () => router.push("/doctor"),
     },
     {
       id: "3",
-      title: "Payment Method",
+      title: "Order Medicine",
       icon: <MaterialIcons name="payment" size={24} color="#333" />,
-      onPress: () => router.push("/payment"),
+      onPress: () => router.push("/ordermedicine"),
     },
     {
       id: "4",
@@ -76,8 +74,8 @@ const ProfilePage = () => {
             <View style={styles.avatarContainer}>
               <Feather name="user" size={60} color="#fff" />
             </View>
-            <Text style={styles.userName}>John Doe</Text>
-            <Text style={styles.userEmail}>john.doe@example.com</Text>
+            <Text style={styles.userName}>{user?.name}</Text>
+            <Text style={styles.userEmail}>{user?.email}</Text>
           </View>
 
           {/* Menu Items */}

@@ -1,9 +1,14 @@
+import { RootState } from "@/app/store";
+import { useAppSelector } from "@/app/store/hooks";
 import React from "react";
 import { Image, View, Text, StyleSheet } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 
-export const Background = () => (
-  <SafeAreaProvider>
+export const Background = () =>{
+  const user = useAppSelector((state: RootState) => state.auth.user);
+console.log("user", user);
+  return(
+    <SafeAreaProvider>
     <SafeAreaView style={styles.container} edges={["right", "left"]}>
       <View style={styles.flexContainer}>
         <View style={styles.content}>
@@ -12,7 +17,7 @@ export const Background = () => (
             resizeMode="cover"
             style={styles.profilePic}
           />
-          <Text style={styles.text}>Welcome Sushil!</Text>
+          <Text style={styles.text}>Welcome {user?.name}!</Text>
           <Text style={styles.subtext}>How is it going today?</Text>
         </View>
 
@@ -25,8 +30,9 @@ export const Background = () => (
         </View>
       </View>
     </SafeAreaView>
-  </SafeAreaProvider>
-);
+  </SafeAreaProvider> 
+  )
+}
 
 const styles = StyleSheet.create({
   container: {

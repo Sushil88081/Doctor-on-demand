@@ -1,15 +1,23 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Alert } from "react-native";
 import React, { useState } from "react";
 import { router } from "expo-router";
+import { useDispatch, useSelector } from "react-redux";
 
-// Define types for the data
+import { RootState } from "@/app/store";
+import { createAppointment } from "../doctorSlice";
+
+
 interface Day {
   day: string;
   date: string;
+  fullDate: Date;
 }
 
 export default function TopCard() {
-  const [selectedDay, setSelectedDay] = useState<string | null>(null);
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state: RootState) => state.appointment);
+
+  const [selectedDay, setSelectedDay] = useState<Day | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
 
   // Function to generate the next 7 days dynamically
@@ -21,13 +29,13 @@ export default function TopCard() {
       const date = new Date(today);
       date.setDate(today.getDate() + i);
 
-      const day = date.toLocaleDateString("en-US", { weekday: "short" }); // Sun, Mon, etc.
+      const day = date.toLocaleDateString("en-US", { weekday: "short" });
       const formattedDate = date.toLocaleDateString("en-US", {
         day: "2-digit",
-        month: "short", // May, Jun, etc.
+        month: "short",
       });
 
-      daysArr.push({ day, date: formattedDate });
+      daysArr.push({ day, date: formattedDate, fullDate: date });
     }
 
     return daysArr;
@@ -46,6 +54,39 @@ export default function TopCard() {
     "05:00 PM",
     "06:00 PM",
   ];
+
+  const handleSubmit = async () => {
+    if (!selectedDay || !selectedTime) {
+      Alert.alert("Error", "Please select both day and time.");
+      return;
+    }
+
+    // Merge date and time to create complete timestamp
+    const [time, modifier] = selectedTime.split(" ");
+    let [hours, minutes] = time.split(":").map(Number);
+    if (modifier === "PM" && hours !== 12) hours += 12;
+    if (modifier === "AM" && hours === 12) hours = 0;
+
+    const appointmentDate = new Date(selectedDay.fullDate);
+    appointmentDate.setHours(hours, minutes, 0, 0);
+
+    // Dispatch create appointment action
+    const appointmentData = {
+      patient_id: 2, // Replace with your logic
+      doctor_id: 2, // Replace with your logic
+      appointment_date: appointmentDate.toISOString(),
+      status: "pending",
+      schedule_id: 1, // Replace with your logic
+    };
+
+    try {
+      await dispatch(createAppointment(appointmentData)).unwrap();
+      Alert.alert("Success", "Appointment Booked Successfully");
+      router.push("/doctor/components/appointmentBook");
+    } catch (err) {
+      Alert.alert("Error", err.toString());
+    }
+  };
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "#f2f2f2" }}>
@@ -69,12 +110,12 @@ export default function TopCard() {
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={{ flexDirection: "row", gap: 10 }}>
             {days.map((item, index) => {
-              const selected = selectedDay === item.day;
+              const selected = selectedDay?.day === item.day;
               return (
                 <TouchableOpacity
                   key={index}
                   onPress={() => {
-                    setSelectedDay(item.day);
+                    setSelectedDay(item);
                     setSelectedTime(null);
                   }}
                   activeOpacity={0.7}
@@ -104,14 +145,7 @@ export default function TopCard() {
 
         {selectedDay && (
           <>
-            <Text
-              style={{
-                fontSize: 20,
-                fontWeight: "600",
-                marginTop: 24,
-                marginBottom: 12,
-              }}
-            >
+            <Text style={{ fontSize: 20, fontWeight: "600", marginTop: 24 }}>
               Select Time Slot
             </Text>
 
@@ -153,9 +187,7 @@ export default function TopCard() {
         <TouchableOpacity
           disabled={!selectedDay || !selectedTime}
           activeOpacity={0.8}
-          onPress={()=>{
-            router.push("/doctor/components/appointmentBook")
-          }}
+          onPress={handleSubmit}
           style={{
             marginTop: 30,
             backgroundColor: selectedDay && selectedTime ? "#007BFF" : "#ccc",
@@ -164,15 +196,9 @@ export default function TopCard() {
             alignItems: "center",
           }}
         >
-          <Text
-            style={{
-              color: "#fff",
-              fontWeight: "700",
-              fontSize: 16,
-            }}
-          >
+          <Text style={{ color: "#fff", fontWeight: "700", fontSize: 16 }}>
             {selectedDay && selectedTime
-              ? `Book for ${selectedDay} at ${selectedTime}`
+              ? `Book for ${selectedDay.day} at ${selectedTime}`
               : "Select Day & Time"}
           </Text>
         </TouchableOpacity>
