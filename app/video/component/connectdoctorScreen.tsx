@@ -1,17 +1,25 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { router } from 'expo-router';
+import { startVideoCall } from '@/app/services/api';
+
 
 const ConnectDoctorScreen = () => {
   const [name, setName] = useState('');
-  const navigation = useNavigation();
+  const [doctorId, setDoctorId] = useState('D123'); // Doctor ID hardcoded for now
 
-  const startCall = () => {
+  const startCall = async () => {
     if (name.trim()) {
-      navigation.navigate('VideoCall', { userName: name });
+      try {
+        const roomId = await startVideoCall(doctorId, name);
+        router.push({
+          pathname: '/video/component/videoCallScreen',
+          params: { roomId },
+        });
+      } catch (error) {
+        console.error("Error in starting the call: ", error);
+      }
     }
-    router.push("/video/component/videoCallScreen")
   };
 
   return (
