@@ -56,6 +56,7 @@ export default function TopCard() {
   ];
 
   const handleSubmit = async () => {
+    router.push("/doctor/components/appointmentBook");
     if (!selectedDay || !selectedTime) {
       Alert.alert("Error", "Please select both day and time.");
       return;
@@ -82,7 +83,7 @@ export default function TopCard() {
     try {
       await dispatch(createAppointment(appointmentData)).unwrap();
       Alert.alert("Success", "Appointment Booked Successfully");
-      router.push("/doctor/components/appointmentBook");
+    
     } catch (err) {
       Alert.alert("Error", err.toString());
     }
