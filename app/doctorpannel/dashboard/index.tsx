@@ -4,9 +4,9 @@ import DoctorDashboardScreen from "./dashboard";
 
 const Dashboard = () => {
   return (
-    <View>
+  
       <DoctorDashboardScreen />
-    </View>
+   
   );
 };
 

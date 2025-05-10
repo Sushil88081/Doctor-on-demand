@@ -7,32 +7,33 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { FontAwesome5, MaterialIcons, Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 
 const options = [
   {
     id: "1",
     title: "Top Doctors",
     icon: <FontAwesome5 name="user-md" size={28} color="#4a90e2" />,
-    onPress: () => console.log("Top Doctors Clicked"),
+    onPress: () => router.push("/doctor"), // Navigate to the Doctors screen on press`
   },
   {
     id: "2",
     title: "Pharmacy",
     icon: <MaterialIcons name="local-pharmacy" size={28} color="#e74c3c" />,
-    onPress: () => console.log("Pharmacy Clicked"),
+    onPress: () => router.push("/ordermedicine"),
   },
   {
     id: "3",
     title: "Other Services",
     icon: <Ionicons name="md-options" size={28} color="#27ae60" />,
-    onPress: () => console.log("Other Services Clicked"),
+    onPress: () => alert("Other Services not available now"),
   },
 ];
 
 const HorizontalOptions = () => {
   return (
     <View style={styles.container}>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={true}>
         {options.map((item) => (
           <TouchableOpacity
             key={item.id}
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
   card: {
     width: 120,
     height: 100,
-    backgroundColor: "#fff",
+    backgroundColor: "#d3d3d3",
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
@@ -74,6 +75,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#333",
+    color: "black",
   },
 });
