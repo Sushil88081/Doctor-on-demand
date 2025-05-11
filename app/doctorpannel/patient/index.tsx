@@ -1,12 +1,10 @@
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import React from "react";
 import PatientDetailsScreen from "./patient";
 
 const Patient = () => {
   return (
-    <View>
       <PatientDetailsScreen />
-    </View>
   );
 };
 

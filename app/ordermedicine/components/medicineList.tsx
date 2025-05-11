@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMedicines, Medicine } from "../ordermedicneSlice";
+import { router } from "expo-router";
 
 
 const MedicineList = () => {
@@ -30,6 +31,7 @@ const MedicineList = () => {
       Alert.alert("Out of Stock", `${medicine.name} is not available right now.`);
       return;
     }
+    router.push(`/address`);
 
     // dispatch(orderMedicine(medicine.id));
   };
