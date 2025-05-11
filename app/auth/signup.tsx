@@ -96,11 +96,12 @@ const Signup = () => {
             value={value.role}
             onChange={(e) => handleChange("role", e.target.value)}
             style={styles.input}
+            
           >
-            <option value="">Select Role</option>
-            <option value="doctor">Doctor</option>
+            <option value=""  >Select Role</option>
+            <option value="doctor" >Doctor</option>
             <option value="patient">Patient</option>
-            <option value="admin">Admin</option>
+            <option value="admin" >Admin</option>
           </select>
         ) : (
           <Picker
@@ -132,6 +133,7 @@ const styles = {
     borderRadius: 5,
     borderColor: "gray",
     borderWidth: 1,
+    
   },
   error: {
     color: "red",
