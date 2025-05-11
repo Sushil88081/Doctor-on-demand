@@ -175,7 +175,7 @@ const ReportScreen = () => {
         ) : (
           <View style={styles.emptyContainer}>
             <Image
-              source={require("../../../assets/images/bookmedicine.jpg")}
+              source={require("../../assets/images/bookmedicine.jpg")}
               style={styles.emptyImage}
               resizeMode="contain"
             />
