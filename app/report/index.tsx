@@ -134,7 +134,10 @@ const ReportScreen = () => {
         <ScrollView 
           horizontal 
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.categoryContainer}
+          contentContainerStyle={[
+            styles.categoryContainer,
+            { maxHeight: 50 } // Add this
+          ]}
         >
           {categories.map(category => (
             <TouchableOpacity
