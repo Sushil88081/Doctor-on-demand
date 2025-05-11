@@ -69,6 +69,45 @@ export const createPrescription = createAsyncThunk(
   }
 );
 
+// 🔄 **Thunk to upload a prescription PDF**
+// 🔄 **Thunk to upload a prescription PDF**
+export const uploadPrescription = createAsyncThunk(
+  "prescriptions/upload",
+  async (
+    {
+      file,
+      prescription_id,
+    }: { file: { uri: string; type: string; name: string }; prescription_id: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", {
+        uri: file.uri,
+        type: file.type,
+        name: file.name,
+      } as any);
+      formData.append("prescription_id", prescription_id);
+
+      const response = await axios.post(`${URI}/prescription/upload`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      return {
+        id: prescription_id,
+        pdf_path: response.data.path,
+      };
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to upload prescription"
+      );
+    }
+  }
+);
+
+
 const prescriptionSlice = createSlice({
   name: "prescription",
   initialState,
@@ -100,6 +139,25 @@ const prescriptionSlice = createSlice({
         state.prescriptions.push(action.payload);
       })
       .addCase(createPrescription.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+
+    // 📌 **Upload Prescription**
+    builder
+      .addCase(uploadPrescription.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(uploadPrescription.fulfilled, (state, action) => {
+        state.loading = false;
+        const { id, pdf_path } = action.payload;
+        const index = state.prescriptions.findIndex((p) => p.id === parseInt(id));
+        if (index !== -1) {
+          state.prescriptions[index].pdf_path = pdf_path;
+        }
+      })
+      .addCase(uploadPrescription.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

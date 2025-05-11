@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/video';  // Tumhara backend URL
+const API_URL = 'http://192.168.1.9:5000/api/video';  // Tumhara backend URL
 
 export const startVideoCall = async (doctorId: string, patientId: string) => {
   try {

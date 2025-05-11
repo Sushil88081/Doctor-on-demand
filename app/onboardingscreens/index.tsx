@@ -8,7 +8,10 @@ const OnBoardingsScreen1 = () => {
   return (
     <View style={styles.container}>
       <Image
-        source={require("../../assets/images/onboard1.png")}
+       
+        source={{
+          uri: "https://plus.unsplash.com/premium_photo-1661341423936-40b48564a5bf?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8bGFkeSUyMGRvY3RvcnxlbnwwfHwwfHx8MA%3D%3D"  
+        }}
         style={styles.image}
       />
       <View style={styles.textContainer}>

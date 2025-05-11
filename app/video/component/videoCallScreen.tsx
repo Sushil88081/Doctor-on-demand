@@ -1,80 +1,81 @@
-// components/VideoCallScreen.tsx
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Button, Text } from 'react-native';
+import SimplePeer from 'simple-peer';
+import { useLocalSearchParams } from 'expo-router';
+import io from 'socket.io-client';
 
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+const socket = io('http://192.168.1.9:5000'); // 👈 Change to your IP Address
 
 const VideoCallScreen = () => {
+  const [stream, setStream] = useState<any>(null);
+  const [peer, setPeer] = useState<any>(null);
+  const [connected, setConnected] = useState(false);
+  const videoRef = useRef<any>(null);
+  const remoteVideoRef = useRef<any>(null);
+  const { userName, roomId, initiator } = useLocalSearchParams();
+  
+  console.log("username: ", userName);
+
+  useEffect(() => {
+    // Step 1: Get User Media
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      .then((mediaStream) => {
+        setStream(mediaStream);
+        if (videoRef.current) {
+          videoRef.current.srcObject = mediaStream;
+        }
+      })
+      .catch((err) => console.error('Failed to get media:', err));
+    
+    // Step 2: Join the Room
+    socket.emit('join-room', roomId);
+    
+    // Step 3: Listen for Signaling Data
+    socket.on('signal', (data) => {
+      if (peer) {
+        peer.signal(data);
+      }
+    });
+  }, []);
+
+  const startCall = () => {
+    const peerInstance = new SimplePeer({
+      initiator: initiator === 'true',
+      stream: stream,
+      trickle: false,
+    });
+
+    // Step 4: Send signaling data to socket
+    peerInstance.on('signal', (data: any) => {
+      console.log('SIGNAL DATA:', JSON.stringify(data));
+      socket.emit('signal', { roomId, data });
+    });
+
+    // Step 5: When connected
+    peerInstance.on('connect', () => {
+      console.log('CONNECTED');
+      setConnected(true);
+    });
+
+    // Step 6: Remote stream received
+    peerInstance.on('stream', (remoteStream: any) => {
+      console.log('REMOTE STREAM RECEIVED');
+      if (remoteVideoRef.current) {
+        remoteVideoRef.current.srcObject = remoteStream;
+      }
+    });
+
+    setPeer(peerInstance);
+  };
+
   return (
-    <View style={styles.container}>
-      {/* Remote Video */}
-      <View style={styles.remoteVideo}>
-        <Text style={styles.text}>👤 Remote Video</Text>
-      </View>
-
-      {/* Local Video in Small Window */}
-      <View style={styles.localVideo}>
-        <Text style={styles.text}>📹 You</Text>
-      </View>
-
-      {/* Controls */}
-      <View style={styles.controls}>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.btnText}>🔇</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, { backgroundColor: 'red' }]}>
-          <Text style={styles.btnText}>❌</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.btnText}>🔄</Text>
-        </TouchableOpacity>
-      </View>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text style={{ color: 'black' }}>Video Call with {userName}</Text>
+      <Button title="Start Call" onPress={startCall} />
+      <video ref={videoRef} autoPlay style={{ width: 200, height: 200, marginBottom: 20 }} />
+      <video ref={remoteVideoRef} autoPlay style={{ width: 200, height: 200 }} />
     </View>
   );
 };
 
 export default VideoCallScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000',
-    position: 'relative',
-  },
-  remoteVideo: {
-    flex: 1,
-    backgroundColor: '#333',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  localVideo: {
-    position: 'absolute',
-    width: 120,
-    height: 180,
-    bottom: 100,
-    right: 20,
-    backgroundColor: '#666',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-  },
-  controls: {
-    position: 'absolute',
-    bottom: 30,
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingHorizontal: 20,
-  },
-  button: {
-    backgroundColor: '#222',
-    padding: 15,
-    borderRadius: 50,
-  },
-  btnText: {
-    fontSize: 20,
-    color: '#fff',
-  },
-  text: {
-    color: '#fff',
-  },
-});

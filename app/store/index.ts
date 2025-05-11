@@ -1,3 +1,4 @@
+
 import MedicineReducer  from './../ordermedicine/ordermedicneSlice';
 import { Article } from "./../home/homeSlice";
 import { configureStore } from "@reduxjs/toolkit";
@@ -7,6 +8,8 @@ import articleReducer from "../home/homeSlice";
 import appointmentReducer from "../doctorDetails/doctorSlice";
 import authReducer from "../auth/authSlice";
 import PrescriptionReducer from "../doctorpannel/prescription/prescriptionSlice";
+import patientReducerUpload from"../medicine/medicineSlice"
+
 
 export const store = configureStore({
   reducer: {
@@ -16,7 +19,8 @@ export const store = configureStore({
     appointment:appointmentReducer,
     auth:authReducer,
     Medicine:MedicineReducer,
-    Prescription:PrescriptionReducer
+    Prescription:PrescriptionReducer,
+    patientReducerUpload:patientReducerUpload,
   },
 });
 
