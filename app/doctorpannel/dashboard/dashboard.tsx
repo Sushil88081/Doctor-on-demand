@@ -1,6 +1,7 @@
 // app/dashboard/DoctorDashboardScreen.tsx
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { router } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -9,8 +10,19 @@ import {
   TouchableHighlight,
   Image,
 } from "react-native";
+import { countAppointments } from "./dashboardSlice";
 
 const DoctorDashboardScreen = () => {
+  const dispatch = useAppDispatch();
+  const {totalAppointments} = useAppSelector(
+    (state) => state.DashBoardReducer
+  );
+  console.log("total appointment",totalAppointments)
+
+  useEffect(() => {
+    dispatch(countAppointments());
+  }, [dispatch]);
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.heading}>Doctor Dashboard</Text> 
@@ -32,7 +44,7 @@ const DoctorDashboardScreen = () => {
             style={styles.appointmentImage}
           ></Image>
           <Text style={styles.cardTitle}>Total Appointments </Text>
-          <Text style={styles.cardValue}>42</Text>
+          <Text style={styles.cardValue}>{totalAppointments}</Text>
         </View>
       </TouchableHighlight>
 

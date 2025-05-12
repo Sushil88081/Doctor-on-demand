@@ -72,7 +72,7 @@ const VideoCallScreen = () => {
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text style={{ color: 'black' }}>Video Call with {userName}</Text>
       <Button title="Start Call" onPress={startCall} />
-      <video ref={videoRef} autoPlay style={{ width: 200, height: 200, marginBottom: 20 }} />
+      <video ref={videoRef} autoPlay style={{ width: 450, height: 500, marginBottom: 20 }} />
       <video ref={remoteVideoRef} autoPlay style={{ width: 200, height: 200 }} />
     </View>
   );

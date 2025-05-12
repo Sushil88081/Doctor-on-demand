@@ -10,6 +10,8 @@ import authReducer from "../auth/authSlice";
 import PrescriptionReducer from "../doctorpannel/prescription/prescriptionSlice";
 import patientReducerUpload from"../medicine/medicineSlice"
 import AddressReducer from "../address/addressSlice";
+import DashBoardReducer from "../doctorpannel/dashboard/dashboardSlice"
+import  AdminDashBoardReducer from "../admin/dashboard/dashBoardSlice"
 
 
 export const store = configureStore({
@@ -22,7 +24,9 @@ export const store = configureStore({
     Medicine:MedicineReducer,
     Prescription:PrescriptionReducer,
     patientReducerUpload:patientReducerUpload,
-    AddressReducer:AddressReducer
+    AddressReducer:AddressReducer,
+    DashBoardReducer:DashBoardReducer,
+    AdminDashBoardReducer:AdminDashBoardReducer
   },
 });
 

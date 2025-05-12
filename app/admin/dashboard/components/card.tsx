@@ -1,7 +1,25 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks';
+import { useEffect } from 'react';
+import { countDoctor, countPatient } from '../dashBoardSlice';
 
 const AdminPanel = () => {
+  const dispatch = useAppDispatch();
+  const {totalPatient} = useAppSelector(
+    (state) => state.AdminDashBoardReducer
+  );
+  const {totalDoctor} = useAppSelector(
+    (state) => state.AdminDashBoardReducer
+  );
+  console.log("total appointment",totalPatient)
+
+  useEffect(() => {
+    dispatch(countPatient());
+    dispatch(countDoctor
+      ()
+    )
+  }, [dispatch]);
   // Sample data - replace with your actual data
   const stats = {
     doctors: 12,
@@ -32,13 +50,13 @@ const AdminPanel = () => {
       <View style={styles.statsContainer}>
         <View style={[styles.statCard, styles.doctorCard]}>
           <MaterialIcons name="medical-services" size={28} color="#4b6cb7" />
-          <Text style={styles.statNumber}>{stats.doctors}</Text>
+          <Text style={styles.statNumber}>{totalDoctor}</Text>
           <Text style={styles.statLabel}>Doctors</Text>
         </View>
 
         <View style={[styles.statCard, styles.patientCard]}>
           <Ionicons name="people" size={28} color="#4CAF50" />
-          <Text style={styles.statNumber}>{stats.patients}</Text>
+          <Text style={styles.statNumber}>{totalPatient}</Text>
           <Text style={styles.statLabel}>Patients</Text>
         </View>
 
