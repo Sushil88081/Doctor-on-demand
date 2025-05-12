@@ -4,7 +4,7 @@ import SimplePeer from 'simple-peer';
 import { useLocalSearchParams } from 'expo-router';
 import io from 'socket.io-client';
 
-const socket = io('http://192.168.1.9:5000'); // 👈 Change to your IP Address
+const socket = io('http://192.168.216.56:5000'); // 👈 Change to your IP Address
 
 const VideoCallScreen = () => {
   const [stream, setStream] = useState<any>(null);
@@ -71,7 +71,7 @@ const VideoCallScreen = () => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text style={{ color: 'black' }}>Video Call with {userName}</Text>
-      <Button title="Start Call" onPress={startCall} />
+      <Button title="Started Call" onPress={startCall} />
       <video ref={videoRef} autoPlay style={{ width: 450, height: 500, marginBottom: 20 }} />
       <video ref={remoteVideoRef} autoPlay style={{ width: 200, height: 200 }} />
     </View>
