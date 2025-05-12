@@ -44,22 +44,34 @@ import { useState } from 'react';
       // Basic validation
       if (!formData.name || !formData.addressLine1 || !formData.city || 
           !formData.state || !formData.pincode || !formData.phone) {
-        Alert.alert('Error', 'Please fill all required fields');
+        alert('Please fill all required fields');
         return;
       }
   
-      if (!/^\d{6}$/.test(formData.pincode)) {
-        Alert.alert('Error', 'Please enter a valid 6-digit pincode');
-        return;
-      }
+      // if (!/^\d{6}$/.test(formData.pincode)) {
+      //   Alert.alert('Error', 'Please enter a valid 6-digit pincode');
+      //   return;
+      // }
   
-      if (!/^\d{10}$/.test(formData.phone)) {
-        Alert.alert('Error', 'Please enter a valid 10-digit phone number');
-        return;
-      }
+      // if (!/^\d{10}$/.test(formData.phone)) {
+      //   Alert.alert('Error', 'Please enter a valid 10-digit phone number');
+      //   return;
+      // }
   
       onSubmit(formData);
       console.log('Form submitted:', formData);
+    //   try {
+    //     await dispatch(createPrescription(newPrescription)).unwrap();
+    //     Alert.alert("Success", "Prescription created successfully!");
+    //     setPatientName("");
+    //     setDoctorName("");
+    //     setSymptoms("");
+    //     setDiagnosis("");
+    //     setMedicine("");
+    //     setNotes("");
+    //   } catch (error: any) {
+    //     Alert.alert("Error", error.message || "Failed to create prescription");
+    //   }
     };
   
     return (
@@ -156,7 +168,7 @@ import { useState } from 'react';
           placeholder="6-digit pincode"
           value={formData.pincode}
           onChangeText={(text) => setFormData({ ...formData, pincode: text })}
-          keyboardType="numeric"
+          keyboardType="number-pad"
           maxLength={6}
         />
   

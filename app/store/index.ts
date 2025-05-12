@@ -9,6 +9,7 @@ import appointmentReducer from "../doctorDetails/doctorSlice";
 import authReducer from "../auth/authSlice";
 import PrescriptionReducer from "../doctorpannel/prescription/prescriptionSlice";
 import patientReducerUpload from"../medicine/medicineSlice"
+import AddressReducer from "../address/addressSlice";
 
 
 export const store = configureStore({
@@ -21,6 +22,7 @@ export const store = configureStore({
     Medicine:MedicineReducer,
     Prescription:PrescriptionReducer,
     patientReducerUpload:patientReducerUpload,
+    AddressReducer:AddressReducer
   },
 });
 
