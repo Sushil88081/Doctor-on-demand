@@ -6,8 +6,6 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 const Schedule = () => {
   return (
 
-   
-
       <DoctorScheduleScreen />
 
       
