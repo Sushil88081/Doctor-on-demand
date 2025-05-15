@@ -4,9 +4,9 @@ import ProfilePage from "./components/profile";
 
 const Setting = () => {
   return (
-    <View>
+
       <ProfilePage />
-    </View>
+
   );
 };
 

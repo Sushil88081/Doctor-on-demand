@@ -14,6 +14,8 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { RootState } from "../../store/index";
 import { fetchDoctors } from "../doctorSlice";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "expo-router";
 
 // Define types for doctor data
 // type Doctor = {
@@ -95,12 +97,15 @@ import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 
 // Doctor Card Component
 const DoctorCard: React.FC<{ doctor: Doctor }> = React.memo(({ doctor }) => {
+  const navigation = useNavigation();
   const handlePress = () => {
     router.push(`/doctorDetails/${doctor.ID}`);
     console.log("doctor list", doctor.email);
   };
   return (
     <View style={styles.card}>
+   
+
       <Image
         source={{ uri: doctor.image }}
         style={styles.doctorImage}

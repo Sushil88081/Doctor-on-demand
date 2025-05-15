@@ -34,6 +34,7 @@ const HorizontalOptions = () => {
   return (
     <View style={styles.container}>
       <ScrollView horizontal showsHorizontalScrollIndicator={true}>
+        
         {options.map((item) => (
           <TouchableOpacity
             key={item.id}

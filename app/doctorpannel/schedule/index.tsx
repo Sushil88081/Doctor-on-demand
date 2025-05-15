@@ -4,9 +4,9 @@ import DoctorScheduleScreen from "./schedule";
 
 const Schedule = () => {
   return (
-    <View>
+   
       <DoctorScheduleScreen />
-    </View>
+  
   );
 };
 

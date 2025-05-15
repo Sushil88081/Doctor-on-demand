@@ -4,9 +4,9 @@ import Setting from "../setting";
 
 export default function Tab() {
   return (
-    <View>
+
       <Setting />
-    </View>
+
   );
 }
 

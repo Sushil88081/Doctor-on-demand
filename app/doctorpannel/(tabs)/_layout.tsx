@@ -30,7 +30,7 @@ export default function TabLayout() {
         options={{
           title: "Prescriptions",
           tabBarIcon: ({ color }) => (
-            <Octicons name="feed-person" size={28} color="black" />
+            <Ionicons name="person" size={28} color="black" />
           ),
         }}
       />
@@ -39,7 +39,7 @@ export default function TabLayout() {
         options={{
           title: "Schedules",
           tabBarIcon: ({ color }) => (
-            <Octicons name="clock" size={28} color="black" />
+            <Ionicons name="calendar-clear-outline" size={28} color="black" />
           ),
         }}
       />
@@ -48,7 +48,7 @@ export default function TabLayout() {
         options={{
           title: "Profile",
           tabBarIcon: ({ color }) => (
-            <FontAwesome size={28} name="file-picture-o" color="black" />
+            <Ionicons name="settings" size={24} color="black" />  
           ),
         }}
       />
